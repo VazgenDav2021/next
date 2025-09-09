@@ -6,11 +6,10 @@ import AchievementsSection from "@/components/sections/AchievementsSection";
 import SuccessStoriesSection from "@/components/sections/SuccessStoriesSection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import { getPageBySlug } from "@/services";
-import { JSX } from "react";
 
 const slug = "home";
 
-// Функция для генерации метаданных страницы
+// Генерация метаданных страницы
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug(slug);
 
@@ -18,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const seo = page.seo[0];
   const ogImageUrl = seo.ogImage?.[0]?.url
-    ? `https://steadfast-renewal-d75371361d.strapiapp.com/api${seo.ogImage[0].url}`
+    ? `https://steadfast-renewal-d75371361d.strapiapp.com${seo.ogImage[0].url}`
     : undefined;
 
   return {
@@ -50,25 +49,32 @@ export default async function HomePage() {
     );
   }
 
-  const sectionMap: Record<
-    string,
-    (props: any) => JSX.Element | Promise<JSX.Element>
-  > = {
-    "sections.hero": (props) => <HeroSection {...props} />,
-    "sections.achievements": (props) => <AchievementsSection {...props} />,
-    "sections.success-stories": (props) => (
-      <SuccessStoriesSection {...props} slug={slug} />
-    ),
-    "sections.solutions": () => <SolutionsSection slug={slug} />,
+  // Вместо функций храним ссылки на компоненты
+  const sectionMap: Record<string, React.ComponentType<any>> = {
+    "sections.hero": HeroSection,
+    "sections.achievements": AchievementsSection,
+    "sections.success-stories": SuccessStoriesSection,
+    "sections.solutions": SolutionsSection,
   };
 
   return (
     <Layout>
       {page.sections.map((section: any) => {
         const Component = sectionMap[section.__component];
-        return Component ? (
-          <Component key={section.id} section={section} />
-        ) : null;
+        if (!Component) return null;
+
+        // Для success-stories пробрасываем slug дополнительно
+        if (section.__component === "sections.success-stories") {
+          return <Component key={section.id} section={section} slug={slug} />;
+        }
+
+        // Для solutions пробрасываем только slug
+        if (section.__component === "sections.solutions") {
+          return <Component key={section.id} slug={slug} />;
+        }
+
+        // Для hero и achievements пробрасываем только section
+        return <Component key={section.id} section={section} />;
       })}
     </Layout>
   );
