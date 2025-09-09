@@ -35,7 +35,7 @@ export default async function SuccessStoriesSection({
             {cards.map((card: SuccessStoryCard) => {
               const bgImage =
                 card.logo.length > 0
-                  ? `url("https://steadfast-renewal-d75371361d.strapiapp.com/api${card.logo[0]?.image?.url}")`
+                  ? `url("https://steadfast-renewal-d75371361d.media.strapiapp.com/api${card.logo[0]?.image?.url}")`
                   : "none";
 
               return (

@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const seo = page.seo[0];
   const ogImageUrl = seo.ogImage?.[0]?.url
-    ? `https://steadfast-renewal-d75371361d.strapiapp.com${seo.ogImage[0].url}`
+    ? `https://steadfast-renewal-d75371361d.media.strapiapp.com/${seo.ogImage[0].url}`
     : undefined;
 
   return {

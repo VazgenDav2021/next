@@ -6,11 +6,15 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ section }: HeroSectionProps) {
+  console.log({
+    section: section,
+  });
+
   return (
     <section
       className="w-full h-[600px] bg-cover bg-center flex items-center"
       style={{
-        backgroundImage: `url("https://steadfast-renewal-d75371361d.strapiapp.com/api${section.backgroundImage?.url}")`,
+        backgroundImage: `url("https://steadfast-renewal-d75371361d.media.strapiapp.com${section.backgroundImage?.url}")`,
       }}>
       <div className="container mx-auto px-4">
         {section.showTitle && (

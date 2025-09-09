@@ -14,7 +14,7 @@ export default async function Navigation() {
       <div>
         {settings.logo && (
           <img
-            src={`https://steadfast-renewal-d75371361d.strapiapp.com/api${settings.logo.url}`}
+            src={`https://steadfast-renewal-d75371361d.media.strapiapp.com/api${settings.logo.url}`}
             alt={settings.logo.alternativeText || "Logo"}
             className="h-8 object-contain"
           />

@@ -24,20 +24,79 @@ export default async function SolutionsSection({
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {solutions.cards.map((card: { id: React.Key | null | undefined; media: { image: { url: any; }; }[]; title: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; text: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; }) => {
-            return (
-              <div
-                key={card.id}
-                className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition">
+          {solutions.cards.map(
+            (card: {
+              id: React.Key | null | undefined;
+              media: { image: { url: any } }[];
+              title:
+                | string
+                | number
+                | bigint
+                | boolean
+                | React.ReactElement<
+                    unknown,
+                    string | React.JSXElementConstructor<any>
+                  >
+                | Iterable<React.ReactNode>
+                | React.ReactPortal
+                | Promise<
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | React.ReactPortal
+                    | React.ReactElement<
+                        unknown,
+                        string | React.JSXElementConstructor<any>
+                      >
+                    | Iterable<React.ReactNode>
+                    | null
+                    | undefined
+                  >
+                | null
+                | undefined;
+              text:
+                | string
+                | number
+                | bigint
+                | boolean
+                | React.ReactElement<
+                    unknown,
+                    string | React.JSXElementConstructor<any>
+                  >
+                | Iterable<React.ReactNode>
+                | React.ReactPortal
+                | Promise<
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | React.ReactPortal
+                    | React.ReactElement<
+                        unknown,
+                        string | React.JSXElementConstructor<any>
+                      >
+                    | Iterable<React.ReactNode>
+                    | null
+                    | undefined
+                  >
+                | null
+                | undefined;
+            }) => {
+              return (
+                <div
+                  key={card.id}
+                  className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition">
                   <img
-                    src={`https://steadfast-renewal-d75371361d.strapiapp.com/api${card.media?.[0].image.url}`}
+                    src={`https://steadfast-renewal-d75371361d.media.strapiapp.com/api${card.media?.[0].image.url}`}
                     className="w-full h-48 object-cover rounded mb-4"
                   />
-                <h3 className="font-bold text-lg mb-2">{card.title}</h3>
-                <p>{card.text}</p>
-              </div>
-            );
-          })}
+                  <h3 className="font-bold text-lg mb-2">{card.title}</h3>
+                  <p>{card.text}</p>
+                </div>
+              );
+            }
+          )}
         </div>
       </div>
     </section>
