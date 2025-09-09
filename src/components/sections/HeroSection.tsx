@@ -7,8 +7,10 @@ interface HeroSectionProps {
 
 export default function HeroSection({ section }: HeroSectionProps) {
   console.log({
-    section: section,
+    section: section.backgroundImage,
   });
+
+  // https://steadfast-renewal-d75371361d.media.strapiapp.com/7efa78a1ce3c92f91b498e8ae276981e41b2aa3e_b8db9a47fe.png
 
   return (
     <section
