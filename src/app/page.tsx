@@ -1,103 +1,75 @@
-import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Metadata } from "next";
+import Layout from "@/components/Layout";
+import HeroSection from "@/components/sections/HeroSection";
+import AchievementsSection from "@/components/sections/AchievementsSection";
+import SuccessStoriesSection from "@/components/sections/SuccessStoriesSection";
+import SolutionsSection from "@/components/sections/SolutionsSection";
+import { getPageBySlug } from "@/services";
+import { JSX } from "react";
 
-export default function Home() {
+const slug = "home";
+
+// Функция для генерации метаданных страницы
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug(slug);
+
+  if (!page?.seo?.[0]) return {};
+
+  const seo = page.seo[0];
+  const ogImageUrl = seo.ogImage?.[0]?.url
+    ? `https://steadfast-renewal-d75371361d.strapiapp.com/api${seo.ogImage[0].url}`
+    : undefined;
+
+  return {
+    title: seo.metaTitle || seo.ogTitle || "",
+    description: seo.metaDescription || seo.ogDescription || "",
+    openGraph: {
+      title: seo.ogTitle || seo.metaTitle || "",
+      description: seo.ogDescription || seo.metaDescription || "",
+      images: ogImageUrl ? [{ url: ogImageUrl }] : [],
+    },
+    robots: {
+      index: !seo.noindex,
+      follow: !seo.nofollow,
+    },
+    alternates: {
+      canonical: seo.canonicalURL || undefined,
+    },
+  };
+}
+
+export default async function HomePage() {
+  const page = await getPageBySlug(slug);
+
+  if (!page) {
+    return (
+      <Layout>
+        <p>Страница не найдена</p>
+      </Layout>
+    );
+  }
+
+  const sectionMap: Record<
+    string,
+    (props: any) => JSX.Element | Promise<JSX.Element>
+  > = {
+    "sections.hero": (props) => <HeroSection {...props} />,
+    "sections.achievements": (props) => <AchievementsSection {...props} />,
+    "sections.success-stories": (props) => (
+      <SuccessStoriesSection {...props} slug={slug} />
+    ),
+    "sections.solutions": () => <SolutionsSection slug={slug} />,
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <Layout>
+      {page.sections.map((section: any) => {
+        const Component = sectionMap[section.__component];
+        return Component ? (
+          <Component key={section.id} section={section} />
+        ) : null;
+      })}
+    </Layout>
   );
 }
